@@ -4,6 +4,8 @@ This folder contains guides, best practices, and resources for using GitHub effe
 
 You'll find documentation on repository naming, branching strategies, commit conventions, Git workflows, and reusable templates.
 
+> **New to Git & GitHub?** Start with the [Git & GitHub Basics](../git-basics.md) guide for a beginner-friendly introduction to the core concepts.
+
 ---
 
 ## 📁 Structure

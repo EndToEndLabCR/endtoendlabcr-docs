@@ -1,312 +1,142 @@
-# Setting Up Local Environment
+---
+sidebar_position: 2
+---
 
-This file provides step-by-step instructions for setting up a complete development environment.
+# Setting Up Your Local Environment
+
+This guide walks you through setting up a complete development environment for EndToEndLabCR projects. It takes about **1–2 hours** depending on your internet speed and whether you already have some of these tools installed.
+
+> **You don't need everything.** Pick the tools that match the stack you plan to contribute to. A Python contributor doesn't need Java, and a frontend contributor doesn't need Maven.
+
+Prefer detailed IDE guides? See [VS Code setup](../install-and-setup/installing-and-setting-up-vscode.md), [PyCharm setup](../install-and-setup/installing-and-setting-up-pycharm.md), and [Homebrew install](../install-and-setup/install-brew.md).
 
 ## Prerequisites
 
-Before starting, ensure you have administrative access to your machine and a stable internet connection.
+- Administrative access to your machine
+- A stable internet connection
+- A GitHub account
 
-## Operating System Setup
+## Step 1: Install a Package Manager
 
-### macOS Setup
+### macOS — Homebrew
 
-#### Install Homebrew
+See our dedicated [Homebrew install guide](../install-and-setup/install-brew.md). Quick version:
 
 ```bash
-# Install Homebrew (package manager for macOS)
 /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
-
-# Add Homebrew to PATH
 echo 'eval "$(/opt/homebrew/bin/brew shellenv)"' >> ~/.zprofile
 eval "$(/opt/homebrew/bin/brew shellenv)"
 ```
 
-#### Install Essential Tools
-
-```bash
-# Development tools
-brew install git node python@3.11 java docker postgresql redis
-
-# Optional but recommended
-brew install --cask visual-studio-code intellij-idea-ce postman docker-desktop
-```
-
-### Windows Setup
-
-#### Install Chocolatey
+### Windows — Chocolatey
 
 ```powershell
-# Run PowerShell as Administrator
 Set-ExecutionPolicy Bypass -Scope Process -Force
 [System.Net.ServicePointManager]::SecurityProtocol = [System.Net.ServicePointManager]::SecurityProtocol -bor 3072
 iex ((New-Object System.Net.WebClient).DownloadString('https://community.chocolatey.org/install.ps1'))
 ```
 
-#### Install Essential Tools
-
-```powershell
-# Development tools
-choco install git nodejs python java docker-desktop postgresql redis-64 -y
-
-# IDEs and editors
-choco install vscode intellijidea-community postman -y
-```
-
-### Linux (Ubuntu/Debian) Setup
-
-#### Update System
+### Linux (Ubuntu/Debian)
 
 ```bash
 sudo apt update && sudo apt upgrade -y
 ```
 
-#### Install Essential Tools
+## Step 2: Install Core Tools
+
+Install only what you need for the stacks you'll work with.
+
+### Recommended Baseline (everyone)
+
+| Tool   | macOS                        | Windows                | Linux                     |
+| ------ | ---------------------------- | ---------------------- | ------------------------- |
+| Git    | `brew install git`           | `choco install git`    | `sudo apt install -y git` |
+| Node   | `brew install node`          | `choco install nodejs` | See NodeSource below      |
+| Docker | `brew install --cask docker` | Docker Desktop         | See Docker section below  |
+
+### Python Stack
 
 ```bash
-# Development tools
-sudo apt install -y git curl wget build-essential
+# macOS
+brew install python@3.11
 
-# Node.js (using NodeSource repository)
-curl -fsSL https://deb.nodesource.com/setup_18.x | sudo -E bash -
-sudo apt install -y nodejs
+# Windows
+choco install python -y
 
-# Python
+# Linux
 sudo apt install -y python3 python3-pip python3-venv
-
-# Java
-sudo apt install -y openjdk-17-jdk
-
-# Docker
-curl -fsSL https://get.docker.com -o get-docker.sh
-sudo sh get-docker.sh
-sudo usermod -aG docker $USER
-
-# PostgreSQL
-sudo apt install -y postgresql postgresql-contrib
-
-# Redis
-sudo apt install -y redis-server
 ```
 
-## Development Tools Installation
-
-### Git Configuration
+Use `venv` + `pip` for dependency management:
 
 ```bash
-# Set up your identity
-git config --global user.name "Your Name"
-git config --global user.email "your.email@company.com"
+# Create and activate a virtual environment
+python3 -m venv venv
 
-# Set up default branch name
+# macOS/Linux
+source venv/bin/activate
+
+# Windows
+venv\Scripts\activate
+
+# Install project dependencies
+pip install -r requirements.txt
+```
+
+### Java / Spring Boot Stack
+
+```bash
+# macOS
+brew install java maven
+
+# Windows
+choco install java maven -y
+
+# Linux
+sudo apt install -y openjdk-17-jdk maven
+```
+
+### Database Tools
+
+```bash
+# PostgreSQL
+# macOS:  brew install postgresql
+# Windows: choco install postgresql
+# Linux:  sudo apt install -y postgresql postgresql-contrib
+
+# Redis
+# macOS:  brew install redis
+# Windows: choco install redis-64
+# Linux:  sudo apt install -y redis-server
+```
+
+## Step 3: Configure Git
+
+```bash
+git config --global user.name "Your Name"
+git config --global user.email "your.email@example.com"
 git config --global init.defaultBranch main
 
 # Useful aliases
 git config --global alias.st status
-git config --global alias.co checkout
-git config --global alias.br branch
-git config --global alias.ci commit
 git config --global alias.lg "log --oneline --graph --decorate"
-
-# Enable credential helper (macOS)
-git config --global credential.helper osxkeychain
-
-# Enable credential helper (Windows)
-git config --global credential.helper manager-core
-
-# Enable credential helper (Linux)
-git config --global credential.helper cache
 ```
 
-### SSH Key Setup
+## Step 4: Set Up Your IDE
+
+We support **VS Code** and **IntelliJ / PyCharm**. See our dedicated guides:
+
+- [VS Code setup](../install-and-setup/installing-and-setting-up-vscode.md)
+- [PyCharm setup](../install-and-setup/installing-and-setting-up-pycharm.md)
+
+### VS Code Quick Setup
 
 ```bash
-# Generate SSH key
-ssh-keygen -t ed25519 -C "your.email@company.com"
-
-# Add to SSH agent (macOS/Linux)
-eval "$(ssh-agent -s)"
-ssh-add ~/.ssh/id_ed25519
-
-# Copy public key to clipboard (macOS)
-pbcopy < ~/.ssh/id_ed25519.pub
-
-# Copy public key to clipboard (Linux)
-cat ~/.ssh/id_ed25519.pub | xclip -selection clipboard
-
-# Copy public key to clipboard (Windows)
-clip < ~/.ssh/id_ed25519.pub
-```
-
-Add the copied public key to your GitHub account: Settings → SSH and GPG keys → New SSH key
-
-### Python Environment Setup
-
-#### Install Poetry (Recommended)
-
-```bash
-# Install Poetry
-curl -sSL https://install.python-poetry.org | python3 -
-
-# Add Poetry to PATH
-echo 'export PATH="$HOME/.local/bin:$PATH"' >> ~/.bashrc
-source ~/.bashrc
-
-# Configure Poetry
-poetry config virtualenvs.in-project true
-```
-
-#### Alternative: Traditional Virtual Environment
-
-```bash
-# Create virtual environment
-python3 -m venv venv
-
-# Activate virtual environment
-# macOS/Linux:
-source venv/bin/activate
-# Windows:
-venv\Scripts\activate
-
-# Install common packages
-pip install --upgrade pip
-pip install requests fastapi uvicorn pytest black flake8
-```
-
-### Node.js Environment Setup
-
-#### Install Node Version Manager (Optional but Recommended)
-
-```bash
-# Install nvm (macOS/Linux)
-curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.0/install.sh | bash
-source ~/.bashrc
-
-# Install and use latest LTS Node.js
-nvm install --lts
-nvm use --lts
-nvm alias default node
-```
-
-#### Install Global Packages
-
-```bash
-npm install -g @angular/cli create-react-app typescript ts-node nodemon
-```
-
-### Java Environment Setup
-
-#### Set JAVA_HOME
-
-```bash
-# macOS (add to ~/.zshrc or ~/.bash_profile)
-export JAVA_HOME=$(/usr/libexec/java_home)
-
-# Linux (add to ~/.bashrc)
-export JAVA_HOME=/usr/lib/jvm/java-17-openjdk-amd64
-
-# Windows (set environment variable)
-# JAVA_HOME = C:\Program Files\Java\jdk-17
-```
-
-#### Install Maven
-
-```bash
-# macOS
-brew install maven
-
-# Linux
-sudo apt install maven
-
-# Windows
-choco install maven
-```
-
-## Database Setup
-
-### PostgreSQL Configuration
-
-```bash
-# Start PostgreSQL service
-# macOS (if installed via Homebrew)
-brew services start postgresql
-
-# Linux
-sudo systemctl start postgresql
-sudo systemctl enable postgresql
-
-# Create development database
-createdb devdb
-
-# Connect to PostgreSQL
-psql postgres
-
--- Create development user
-CREATE USER devuser WITH ENCRYPTED PASSWORD 'devpassword';
-GRANT ALL PRIVILEGES ON DATABASE devdb TO devuser;
-ALTER USER devuser CREATEDB;
-\q
-```
-
-### Redis Configuration
-
-```bash
-# Start Redis service
-# macOS
-brew services start redis
-
-# Linux
-sudo systemctl start redis-server
-sudo systemctl enable redis-server
-
-# Test Redis connection
-redis-cli ping
-# Should return: PONG
-```
-
-## Docker Setup
-
-### Docker Desktop Installation
-
-1. Download Docker Desktop from [docker.com](https://www.docker.com/products/docker-desktop)
-2. Install and start Docker Desktop
-3. Sign in to Docker Hub (optional but recommended)
-
-### Verify Docker Installation
-
-```bash
-# Check Docker version
-docker --version
-docker-compose --version
-
-# Test Docker installation
-docker run hello-world
-
-# Pull common base images
-docker pull node:18-alpine
-docker pull python:3.11-slim
-docker pull postgres:14
-docker pull redis:7-alpine
-```
-
-## IDE Configuration
-
-### Visual Studio Code Setup
-
-#### Install Essential Extensions
-
-```bash
-# Install VS Code extensions via command line
 code --install-extension ms-python.python
-code --install-extension ms-vscode.vscode-typescript-next
-code --install-extension bradlc.vscode-tailwindcss
 code --install-extension esbenp.prettier-vscode
-code --install-extension ms-vscode.vscode-json
 code --install-extension redhat.vscode-yaml
-code --install-extension ms-vscode-remote.remote-containers
 code --install-extension GitHub.copilot
 ```
-
-#### Configure Settings
 
 Create `.vscode/settings.json` in your workspace:
 
@@ -316,110 +146,124 @@ Create `.vscode/settings.json` in your workspace:
   "editor.codeActionsOnSave": {
     "source.organizeImports": true
   },
-  "python.defaultInterpreterPath": "./venv/bin/python",
-  "python.formatting.provider": "black",
-  "python.linting.enabled": true,
-  "python.linting.flake8Enabled": true,
-  "typescript.preferences.importModuleSpecifier": "relative",
   "editor.rulers": [80, 120],
   "files.trimTrailingWhitespace": true,
   "files.insertFinalNewline": true
 }
 ```
 
-### IntelliJ IDEA Setup
+## Step 5: Docker
 
-#### Install Plugins
+Docker is useful for running databases and services without installing them natively.
 
-- Python (if using IntelliJ IDEA Ultimate)
-- Docker
-- GitToolBox
-- Rainbow Brackets
-- SonarLint
-
-#### Configure Code Style
-
-1. Go to Settings → Editor → Code Style
-2. Import scheme from company style guide
-3. Set line length to 120 characters
-4. Enable auto-formatting on save
-
-## Environment Variables
-
-### Create Environment Files
+1. Download [Docker Desktop](https://www.docker.com/products/docker-desktop) (macOS/Windows) or follow the [Docker Engine install](https://docs.docker.com/engine/install/) for Linux
+2. Start Docker Desktop
+3. Verify the installation:
 
 ```bash
-# Create global environment file
-touch ~/.env
-
-# Add common environment variables
-echo 'export DATABASE_URL="postgresql://devuser:devpassword@localhost:5432/devdb"' >> ~/.env
-echo 'export REDIS_URL="redis://localhost:6379"' >> ~/.env
-echo 'export NODE_ENV="development"' >> ~/.env
-echo 'export PYTHON_ENV="development"' >> ~/.env
-
-# Source the file
-source ~/.env
-
-# Add to shell profile
-echo 'source ~/.env' >> ~/.bashrc
+docker --version
+docker run hello-world
 ```
 
-## Testing the Setup
-
-### Clone and Run Sample Project
+Pull base images we use across projects:
 
 ```bash
-# Clone our template repository
-git clone https://github.com/EndToEndLabCR/template-api-python.git
-cd template-api-python
-
-# Set up Python environment
-poetry install  # or pip install -r requirements.txt
-
-# Run the application
-poetry run uvicorn app.main:app --reload
-
-# Test in another terminal
-curl http://localhost:8000/health
+docker pull node:18-alpine
+docker pull python:3.11-slim
+docker pull postgres:14
+docker pull redis:7-alpine
 ```
 
-### Verify All Tools
+## Step 6: Database Quick Start
+
+### PostgreSQL
 
 ```bash
-# Check all installations
+# Start the service
+# macOS:  brew services start postgresql
+# Linux:  sudo systemctl start postgresql && sudo systemctl enable postgresql
+
+# Create a development database
+createdb devdb
+
+# Connect and create a dev user
+psql postgres
+```
+
+```sql
+CREATE USER devuser WITH ENCRYPTED PASSWORD 'devpassword';
+GRANT ALL PRIVILEGES ON DATABASE devdb TO devuser;
+ALTER USER devuser CREATEDB;
+\q
+```
+
+### Redis
+
+```bash
+# macOS:  brew services start redis
+# Linux:  sudo systemctl start redis-server && sudo systemctl enable redis-server
+
+# Test
+redis-cli ping   # should return PONG
+```
+
+## Step 7: Verify Everything
+
+```bash
 echo "=== Tool Versions ==="
 git --version
 node --version
 npm --version
 python3 --version
-java -version
-mvn --version
 docker --version
-psql --version
-redis-cli --version
 
-echo "=== Service Status ==="
-# Test database connection
-psql -h localhost -U devuser -d devdb -c "SELECT version();"
-
-# Test Redis connection
-redis-cli ping
-
-# Test Docker
-docker run --rm hello-world
+# Optional — if you installed them
+java -version 2>&1 || echo "Java not installed"
+mvn --version 2>&1 || echo "Maven not installed"
+psql --version 2>&1 || echo "PostgreSQL not installed"
+redis-cli --version 2>&1 || echo "Redis not installed"
 ```
 
-## Troubleshooting Common Issues
+## Test Your Setup
 
-### Permission Issues (macOS/Linux)
+Clone one of our template repos and run it locally:
 
 ```bash
-# Fix npm permissions
-sudo chown -R $(whoami) ~/.npm
-sudo chown -R $(whoami) /usr/local/lib/node_modules
+git clone https://github.com/EndToEndLabCR/template-api-python.git
+cd template-api-python
+python3 -m venv venv
+source venv/bin/activate  # or venv\Scripts\activate on Windows
+pip install -r requirements.txt
+uvicorn app.main:app --reload
+```
 
-# Fix Docker permissions (Linux)
+In another terminal:
+
+```bash
+curl http://localhost:8000/health
+```
+
+If you get a healthy response, you're ready to go.
+
+## Troubleshooting
+
+### Port Conflicts
+
+```bash
+# Check what's using common ports
+lsof -i :3000   # React dev server
+lsof -i :8000   # FastAPI / Django
+lsof -i :8080   # Spring Boot
+lsof -i :5432   # PostgreSQL
+lsof -i :6379   # Redis
+
+# Kill a process if needed
+kill -9 <PID>
+```
+
+### Docker Permission Issues (Linux)
+
+```bash
 sudo usermod -aG docker $USER
 # Log out and log back in
 ```
@@ -427,74 +271,29 @@ sudo usermod -aG docker $USER
 ### PATH Issues
 
 ```bash
-# Check your PATH
 echo $PATH
-
-# Reload shell configuration
-source ~/.bashrc  # or ~/.zshrc for zsh
+# Reload your shell
+source ~/.zshrc   # or ~/.bashrc
 ```
 
-### Port Conflicts
-
-```bash
-# Check what's running on common ports
-lsof -i :3000  # React development server
-lsof -i :8000  # FastAPI/Django
-lsof -i :8080  # Spring Boot
-lsof -i :5432  # PostgreSQL
-lsof -i :6379  # Redis
-
-# Kill process if needed
-kill -9 <PID>
-```
-
-### Database Connection Issues
-
-```bash
-# Check PostgreSQL is running
-ps aux | grep postgres
-
-# Check PostgreSQL logs
-# macOS: tail -f /opt/homebrew/var/log/postgres.log
-# Linux: sudo tail -f /var/log/postgresql/postgresql-14-main.log
-
-# Reset PostgreSQL password
-sudo -u postgres psql
-\password postgres
-```
+See our [FAQ & Troubleshooting](../faq-and-troubleshooting/common-errors.md) section for more common issues.
 
 ## Next Steps
 
-After completing the setup:
+1. Follow the [Onboarding Guide](./onboarding-guide.md) if you haven't already
+2. Read the [Git & GitHub Guide](./git-github-guide.md) to learn our workflow
+3. Clone a project repo and make your first contribution
+4. Join the [Discord community](https://discord.gg/mAD7Y6fNzv) and say hello
 
-1. Join the team Slack channels
-2. Request access to development environments
-3. Clone and explore our template projects
-4. Complete the onboarding guide
-5. Ask your buddy or team lead for your first task
-
-## Maintenance
-
-### Regular Updates
+## Keeping Things Fresh
 
 ```bash
-# Update Homebrew packages (macOS)
+# macOS
 brew update && brew upgrade
 
-# Update apt packages (Linux)
+# Linux
 sudo apt update && sudo apt upgrade
 
-# Update npm packages
-npm update -g
-
-# Update Python packages
-pip list --outdated
-poetry update  # if using Poetry
+# Python (upgrade dependencies)
+pip install --upgrade -r requirements.txt
 ```
-
-### Backup Configuration
-
-- Export VS Code settings and extensions
-- Backup your SSH keys securely
-- Document any custom configurations
-- Keep a list of installed packages and tools

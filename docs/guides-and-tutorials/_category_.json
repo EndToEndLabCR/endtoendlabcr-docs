@@ -3,5 +3,6 @@
   "position": 3,
   "link": {
     "type": "generated-index"
-  }
+  },
+  "description": "Step-by-step guides to get started with EndToEndLabCR — from onboarding to setting up your local environment and learning our Git workflow."
 }

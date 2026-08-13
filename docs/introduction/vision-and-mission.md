@@ -1,24 +1,44 @@
+---
+sidebar_position: 2
+---
+
 # Vision and Mission
 
-This file outlines EndToEndLabCR's vision, mission, and core values.
+Where we're going, and why we're building this together.
 
 ## Vision
 
-To be the leading resource for comprehensive, practical software development documentation that bridges the gap between theory and real-world implementation.
+We want to be the team that proves **hands-on learning is the fastest way to become a better developer.** Not through courses or tutorials — through building real things, making real mistakes, and sharing the whole process openly.
 
 ## Mission
 
-Our mission is to:
+Our mission is simple:
 
-- Provide clear, up-to-date technical documentation
-- Establish and maintain best practices across all technology stacks
-- Foster a culture of knowledge sharing and continuous learning
-- Enable teams to deliver high-quality software solutions efficiently
+- **Build real projects** that push us to learn new things
+- **Document everything** — the wins, the bugs, the "oh, that's how you do it" moments
+- **Share openly** so nobody on the team has to figure it out alone
+- **Keep it current** — if it's outdated, it's misleading
 
-## Core Values
+## What We Value
 
-- **Excellence**: We strive for the highest quality in all our documentation and practices
-- **Collaboration**: We believe in the power of teamwork and knowledge sharing
-- **Innovation**: We embrace new technologies and methodologies
-- **Transparency**: We maintain open and honest communication
-- **Continuous Learning**: We are committed to ongoing improvement and education
+These aren't just words on a page. They're how we make decisions:
+
+- **Learn by doing** — We'd rather ship something imperfect and learn from it than wait for perfect
+- **Write it down** — If it's not documented, it didn't happen. Future you will thank present you
+- **No gatekeeping** — Knowledge hoarding hurts the team. Share freely, ask freely
+- **Good enough now > perfect later** — Ship the doc, ship the code, improve it next week
+- **Own it** — See something broken? You don't need permission to fix it
+
+## How These Values Show Up
+
+| Value | In Practice |
+|---|---|
+| Learn by doing | Every tech decision comes from actual project experience |
+| Write it down | Our docs grow with every project we ship |
+| No gatekeeping | Anyone can read, anyone can contribute, no approval walls |
+| Good enough now | We publish drafts and iterate instead of waiting |
+| Own it | If you spot an issue, you're welcome to fix it |
+
+---
+
+Next: Learn [how to navigate these docs](./how-to-use-this-docs) →

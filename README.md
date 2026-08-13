@@ -29,6 +29,7 @@ A centralized repository for relevant documentation, guides, and best practices.
 
 ### ⚙️ Prerequisites
 
+- Node.js >= 20
 - Git
 - Markdown viewer/editor (e.g., VS Code)
 - Access to the internet for external resources
@@ -39,7 +40,26 @@ A centralized repository for relevant documentation, guides, and best practices.
 # Clone the repository
 git clone https://github.com/EndToEndLabCR/endtoendlabcr-docs.git
 cd endtoendlabcr-docs
+
+# Install dependencies
+npm install
 ```
+
+### 🏃 Running Locally
+
+```sh
+# Start the dev server with hot reload
+npm start
+```
+
+This opens the site at **http://localhost:3000**. The server watches for file changes and reloads automatically.
+
+| Command | Description |
+|---|---|
+| `npm start` | Start the dev server (hot reload) |
+| `npm run build` | Build for production |
+| `npm run serve` | Serve the production build locally |
+| `npm run typecheck` | Run TypeScript type checking |
 
 ## 🔗 Important Links
 
