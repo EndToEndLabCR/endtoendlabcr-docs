@@ -30,7 +30,7 @@ You'll find documentation on repository naming, branching strategies, commit con
 
 ### 🧰 Templates
 
-<!-- - [🐞 Issue Templates](./resources/ISSUE_TEMPLATE/) -->
+{/* - [🐞 Issue Templates](./resources/ISSUE_TEMPLATE/) */}
 
 - [📥 Pull Request Template](./resources/PULL_REQUEST_TEMPLATE.md)
 - [📄 README Template](./resources/readme-template.md)
